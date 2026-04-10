@@ -41,16 +41,26 @@
         Reset to Defaults
       </button>
     </div>
+
+    <div v-if="showApiWarning" class="mt-4 p-3 bg-yellow-100 text-yellow-800 rounded text-sm">
+      <p class="font-medium">API Key Required</p>
+      <p>Configure your Mistral API key in .env.local file</p>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { useRoles } from '@/composables/useRoles';
+import { useMistralApi } from '@/services/mistralApi';
+import { ref } from 'vue';
 
+const { validateApiKey } = useMistralApi();
 const {
   heroPrompt,
   villainPrompt,
   defaultRounds: rounds,
   resetToDefaults
 } = useRoles();
+
+const showApiWarning = ref(!validateApiKey());
 </script>
