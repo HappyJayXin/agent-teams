@@ -1,6 +1,7 @@
 import { ref } from 'vue';
 import { useApiService } from '@/services/apiService';
 import { useRoles } from '@/composables/useRoles';
+import { saveToHistory } from '@/utils/storage';
 
 export function useDiscussion() {
   const { getAiResponse, validateApiKey, error: apiError, isLoading } = useApiService();
@@ -106,12 +107,7 @@ export function useDiscussion() {
       points: points.value
     };
 
-    // Save to local storage
-    const history = JSON.parse(localStorage.getItem('discussionHistory') || '[]');
-    history.push(conversationData);
-    localStorage.setItem('discussionHistory', JSON.stringify(history));
-
-    return conversationData;
+    return saveToHistory(conversationData);
   };
 
   return {
