@@ -1,20 +1,26 @@
 <template>
   <div class="discussion-panel">
     <div class="mb-4">
-      <label class="block text-sm font-medium text-gray-700 mb-1">Discussion Topic</label>
+      <label class="block text-sm font-medium text-gray-700 mb-1">討論主題</label>
       <input
         v-model="topic"
         type="text"
-        placeholder="Enter topic to discuss"
+        placeholder="請輸入討論主題"
         class="w-full p-2 border border-gray-300 rounded-md"
-        @keyup.enter="startDiscussion"
       />
+      <p class="mt-1 text-xs text-gray-500">規則：每輪 AI 回覆會要求控制在 {{ maxResponseLength }} 字以內</p>
       <button
         @click="startDiscussion"
         :disabled="isLoading"
-        class="mt-2 px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:bg-blue-300"
+        class="mt-3 px-6 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 focus:ring-4 focus:ring-blue-200 disabled:bg-blue-300 disabled:cursor-not-allowed transition-all duration-200 shadow-md hover:shadow-lg active:shadow-sm flex items-center justify-center"
       >
-        {{ isLoading ? 'Discussing...' : 'Start Discussion' }}
+        <span v-if="isLoading" class="mr-2">
+          <svg class="animate-spin h-4 w-4 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+        </span>
+        {{ isLoading ? '討論中...' : '開始討論' }}
       </button>
     </div>
 
@@ -25,49 +31,62 @@
       <span>{{ apiError }}</span>
     </div>
 
-    <div class="conversation-area mb-4 max-h-96 overflow-y-auto border border-gray-200 rounded-lg p-4">
-      <div v-if="conversation.length === 0 && !isLoading" class="text-gray-500">
-        Discussion will appear here...
-      </div>
-
-      <div v-for="(item, index) in conversation" :key="index" class="message mb-3 p-3 rounded-lg" :class="{
-        'bg-blue-100': item.role === 'hero',
-        'bg-red-100': item.role === 'villain'
-      }">
-        <div class="font-bold text-sm" :class="{
-          'text-blue-800': item.role === 'hero',
-          'text-red-800': item.role === 'villain'
-        }">
-          {{ item.role === 'hero' ? 'Hero' : 'Villain' }}
+    <div class="conversation-area mb-4 max-h-[32rem] overflow-y-auto border border-gray-200 rounded-2xl p-4 bg-white">
+      <div class="mb-4 flex items-center justify-between">
+        <div>
+          <h3 class="text-base font-bold text-gray-900">討論紀錄</h3>
+          <p class="text-xs text-gray-500">每輪 AI 回覆限制：{{ maxResponseLength }} 字以內</p>
         </div>
-        <div class="mt-1 text-sm">{{ item.content }}</div>
+        <span class="rounded-full bg-gray-100 px-3 py-1 text-xs font-medium text-gray-600">
+          {{ conversation.length }} 則訊息
+        </span>
       </div>
 
-      <div v-if="isLoading && conversation.length > 0" class="text-gray-500 text-sm">
-        Thinking...
+      <div v-if="conversation.length === 0 && !isLoading" class="rounded-xl border border-dashed border-gray-200 bg-gray-50 p-6 text-center text-sm text-gray-500">
+        對話內容會顯示在這裡...
+      </div>
+
+      <div
+        v-for="(item, index) in conversation"
+        :key="index"
+        class="mb-3 flex"
+        :class="item.role === 'hero' ? 'justify-start' : 'justify-end'"
+      >
+        <article
+          class="max-w-[85%] rounded-2xl border px-4 py-3 shadow-sm"
+          :class="item.role === 'hero'
+            ? 'border-blue-100 bg-blue-50 text-blue-950'
+            : 'border-rose-100 bg-rose-50 text-rose-950'"
+        >
+          <div class="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide">
+            <span
+              class="inline-flex h-6 items-center rounded-full px-2"
+              :class="item.role === 'hero' ? 'bg-blue-100 text-blue-700' : 'bg-rose-100 text-rose-700'"
+            >
+              {{ item.role === 'hero' ? '英雄' : '反派' }}
+            </span>
+            <span class="text-gray-500">第 {{ index + 1 }} 則</span>
+            <span class="text-gray-400">{{ formatTime(item.timestamp) }}</span>
+          </div>
+          <p class="whitespace-pre-wrap break-words text-sm leading-6">
+            {{ item.content }}
+          </p>
+        </article>
+      </div>
+
+      <div v-if="isLoading && conversation.length > 0" class="text-center text-sm text-gray-500">
+        思考中...
       </div>
     </div>
 
-    <div v-if="discussionComplete" class="results-area mt-6 p-4 bg-gray-50 rounded-lg">
-      <h3 class="text-lg font-bold mb-2">Discussion Results</h3>
-
-      <div class="mb-4">
-        <h4 class="font-semibold mb-1">Summary:</h4>
-        <p class="text-sm">{{ summary }}</p>
-      </div>
-
-      <div class="mb-4">
-        <h4 class="font-semibold mb-1">Key Points:</h4>
-        <ul class="list-disc list-inside text-sm">
-          <li v-for="(point, index) in points" :key="index">{{ point }}</li>
-        </ul>
-      </div>
-
+    <div v-if="discussionComplete" class="results-area mt-6 p-4">
+      <h3 class="text-lg font-bold mb-2">討論結果</h3>
+      <p class="text-sm whitespace-pre-wrap">{{ summary }}</p>
       <button
         @click="saveConversation"
-        class="px-4 py-2 bg-green-600 text-white rounded-md hover:bg-green-700"
+        class="mt-4 px-6 py-3 bg-green-600 text-white rounded-lg hover:bg-green-700 focus:ring-4 focus:ring-green-200 transition-all duration-200 shadow-md hover:shadow-lg active:shadow-sm"
       >
-        Save Discussion
+        儲存討論
       </button>
     </div>
   </div>
@@ -82,9 +101,16 @@ const {
   discussionComplete,
   summary,
   points,
+  maxResponseLength,
   startDiscussion,
   saveConversation,
   apiError,
   isLoading
 } = useDiscussion();
+
+const formatTime = (timestamp) =>
+  new Intl.DateTimeFormat('zh-TW', {
+    hour: '2-digit',
+    minute: '2-digit'
+  }).format(new Date(timestamp));
 </script>

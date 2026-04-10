@@ -12,7 +12,7 @@ export function useMistralApi() {
 
   const callMistralApi = async (messages, model = 'mistral-small-latest') => {
     if (!validateApiKey()) {
-      error.value = 'Invalid API key';
+      error.value = 'API 金鑰無效';
       return null;
     }
 
@@ -33,7 +33,7 @@ export function useMistralApi() {
       });
 
       if (!response.ok) {
-        throw new Error(`API request failed: ${response.status}`);
+        throw new Error(`API 請求失敗：${response.status}`);
       }
 
       const data = await response.json();

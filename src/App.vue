@@ -6,8 +6,8 @@
       <RoleEditor class="mb-6" />
 
       <div v-if="!apiKeyValid" class="api-key-warning mb-4 p-3 bg-yellow-100 text-yellow-800 rounded">
-        <p class="font-medium">API Key Required</p>
-        <p class="text-sm">Please configure your Mistral API key in the .env.local file</p>
+        <p class="font-medium">需要 API 金鑰</p>
+        <p class="text-sm">請在 `.env.local` 檔案中設定 Mistral API 金鑰</p>
         <code class="text-xs bg-yellow-200 p-1 rounded">VITE_MISTRAL_API_KEY=your_api_key_here</code>
       </div>
 

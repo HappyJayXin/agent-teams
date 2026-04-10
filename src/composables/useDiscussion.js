@@ -14,15 +14,16 @@ export function useDiscussion() {
   const discussionComplete = ref(false);
   const summary = ref('');
   const points = ref([]);
+  const maxResponseLength = 100;
 
   const startDiscussion = async () => {
     if (!validateApiKey()) {
-      apiError.value = 'Please configure a valid Mistral API key';
+      apiError.value = '請先設定有效的 Mistral API 金鑰';
       return;
     }
 
     if (!topic.value.trim()) {
-      apiError.value = 'Please enter a discussion topic';
+      apiError.value = '請輸入討論主題';
       return;
     }
 
@@ -43,12 +44,13 @@ export function useDiscussion() {
     }
 
     const rolePrompt = role === 'hero' ? heroPrompt.value : villainPrompt.value;
-    const response = await getAiResponse(rolePrompt, message);
+    const lengthRulePrompt = `請用繁體中文回覆，且每次回覆嚴格控制在 ${maxResponseLength} 字以內。不要超過上限，不要附加多餘說明。`;
+    const response = await getAiResponse(`${rolePrompt}\n${lengthRulePrompt}`, message);
 
     if (response) {
       conversation.value.push({
         role,
-        content: response,
+        content: response.trim(),
         timestamp: new Date().toISOString()
       });
 
@@ -70,22 +72,20 @@ export function useDiscussion() {
     const conversationText = conversation.value.map(item => `${item.role}: ${item.content}`).join('\n');
 
     const summaryPrompt = `
-      Based on the following discussion, provide a concise summary and key points:
+      你是一位中立的第三方觀察者，請根據以下討論內容，以客觀、中立的角度提供精簡摘要與重點。
 
-      Discussion:
+      討論內容：
       ${conversationText}
 
-      Please provide:
-      1. A brief summary (2-3 sentences)
-      2. Key points in bullet format
+      輸出：
+      1. 100 字客觀摘要，不偏袒任何一方。
+      2. 下決策，應該如何做。
     `;
 
-    const result = await getAiResponse('You are a helpful assistant that summarizes discussions.', summaryPrompt);
+    const result = await getAiResponse('你是一位中立的第三方觀察者，擅長客觀分析討論內容。', summaryPrompt);
 
     if (result) {
-      const [summaryPart, pointsPart] = result.split('\n\n');
-      summary.value = summaryPart || 'No summary available';
-      points.value = pointsPart ? pointsPart.split('\n').filter(p => p.trim()).map(p => p.replace(/^\-?\s*/, '')) : [];
+      summary.value = result;
       discussionComplete.value = true;
     }
   };
@@ -118,6 +118,7 @@ export function useDiscussion() {
     discussionComplete,
     summary,
     points,
+    maxResponseLength,
     startDiscussion,
     saveConversation,
     apiError,
