@@ -8,7 +8,7 @@
 - Node.js version: ^20.19.0 || >=22.12.0
 
 ## Commands
-- Install dependencies: `npm install`
+- Install dependencies: `yarn install`
 - Development server: `npm run dev`
 - Build for production: `npm run build`
 - Preview production build: `npm run preview`
