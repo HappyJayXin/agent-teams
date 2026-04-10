@@ -7,10 +7,10 @@ export function useMistralApi() {
   const isLoading = ref(false);
 
   const validateApiKey = () => {
-    return apiKey && apiKey.startsWith('sk-');
+    return apiKey && apiKey.length > 20;
   };
 
-  const callMistralApi = async (messages, model = 'mistral-large-latest') => {
+  const callMistralApi = async (messages, model = 'mistral-small-latest') => {
     if (!validateApiKey()) {
       error.value = 'Invalid API key';
       return null;
