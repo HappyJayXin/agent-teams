@@ -1,47 +1,44 @@
-<script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import TheWelcome from './components/TheWelcome.vue'
-</script>
-
 <template>
-  <header>
-    <img alt="Vue logo" class="logo" src="./assets/logo.svg" width="125" height="125" />
+  <div class="app-container min-h-screen bg-gray-50 p-4">
+    <AppHeader />
 
-    <div class="wrapper">
-      <HelloWorld msg="You did it!" />
+    <div class="max-w-4xl mx-auto">
+      <RoleEditor class="mb-6" />
+
+      <div v-if="!apiKeyValid" class="api-key-warning mb-4 p-3 bg-yellow-100 text-yellow-800 rounded">
+        <p class="font-medium">API Key Required</p>
+        <p class="text-sm">Please configure your Mistral API key in the .env.local file</p>
+        <code class="text-xs bg-yellow-200 p-1 rounded">VITE_MISTRAL_API_KEY=your_api_key_here</code>
+      </div>
+
+      <DiscussionPanel />
     </div>
-  </header>
-
-  <main>
-    <TheWelcome />
-  </main>
+  </div>
 </template>
 
-<style scoped>
-header {
-  line-height: 1.5;
+<script setup>
+import { ref, onMounted } from 'vue';
+import { useMistralApi } from '@/services/mistralApi';
+import AppHeader from '@/components/AppHeader.vue';
+import RoleEditor from '@/components/RoleEditor.vue';
+import DiscussionPanel from '@/components/DiscussionPanel.vue';
+
+const { validateApiKey } = useMistralApi();
+const apiKeyValid = ref(false);
+
+onMounted(() => {
+  apiKeyValid.value = validateApiKey();
+});
+</script>
+
+<style>
+.app-container {
+  font-family: 'Inter', sans-serif;
 }
 
-.logo {
-  display: block;
-  margin: 0 auto 2rem;
-}
-
-@media (min-width: 1024px) {
-  header {
-    display: flex;
-    place-items: center;
-    padding-right: calc(var(--section-gap) / 2);
-  }
-
-  .logo {
-    margin: 0 2rem 0 0;
-  }
-
-  header .wrapper {
-    display: flex;
-    place-items: flex-start;
-    flex-wrap: wrap;
+@media (max-width: 768px) {
+  .app-container {
+    padding: 1rem;
   }
 }
 </style>
