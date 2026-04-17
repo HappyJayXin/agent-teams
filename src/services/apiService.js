@@ -1,7 +1,7 @@
-import { useMistralApi } from './mistralApi';
+import { useLlmApi } from './llmApi';
 
 export function useApiService() {
-  const { callMistralApi, validateApiKey, error, isLoading } = useMistralApi();
+  const { callLlmApi, validateApiKey, error, isLoading } = useLlmApi();
 
   const getAiResponse = async (rolePrompt, userMessage) => {
     const messages = [
@@ -9,7 +9,7 @@ export function useApiService() {
       { role: 'user', content: userMessage },
     ];
 
-    return await callMistralApi(messages);
+    return await callLlmApi(messages);
   };
 
   return {

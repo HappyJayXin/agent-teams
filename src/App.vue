@@ -7,8 +7,8 @@
 
       <div v-if="!apiKeyValid" class="api-key-warning mb-4 p-3 bg-yellow-100 text-yellow-800 rounded">
         <p class="font-medium">需要 API 金鑰</p>
-        <p class="text-sm">請在 `.env.local` 檔案中設定 Mistral API 金鑰</p>
-        <code class="text-xs bg-yellow-200 p-1 rounded">VITE_MISTRAL_API_KEY=your_api_key_here</code>
+        <p class="text-sm">請在 `.env.local` 檔案中設定 LLM API 金鑰</p>
+        <code class="text-xs bg-yellow-200 p-1 rounded">VITE_LLM_API_KEY=your_api_key_here</code>
       </div>
 
       <DiscussionPanel />
@@ -18,12 +18,12 @@
 
 <script setup>
 import { ref, onMounted } from 'vue';
-import { useMistralApi } from '@/services/mistralApi';
+import { useLlmApi } from '@/services/llmApi';
 import AppHeader from '@/components/AppHeader.vue';
 import RoleEditor from '@/components/RoleEditor.vue';
 import DiscussionPanel from '@/components/DiscussionPanel.vue';
 
-const { validateApiKey } = useMistralApi();
+const { validateApiKey } = useLlmApi();
 const apiKeyValid = ref(false);
 
 onMounted(() => {

@@ -1,16 +1,17 @@
 import { ref } from 'vue';
 
-export function useMistralApi() {
-  const apiKey = import.meta.env.VITE_MISTRAL_API_KEY;
-  const baseUrl = 'https://api.mistral.ai/v1/chat/completions';
+export function useLlmApi() {
+  const apiKey = import.meta.env.VITE_LLM_API_KEY;
+  const baseUrl = import.meta.env.VITE_LLM_BASE_URL;
+  const defaultModel = import.meta.env.VITE_LLM_DEFAULT_MODEL || 'qwen3.5-plus';
   const error = ref(null);
   const isLoading = ref(false);
 
   const validateApiKey = () => {
-    return apiKey && apiKey.length > 20;
+    return apiKey && apiKey.length > 10;
   };
 
-  const callMistralApi = async (messages, model = 'mistral-small-latest') => {
+  const callLlmApi = async (messages, model = defaultModel) => {
     if (!validateApiKey()) {
       error.value = 'API 金鑰無效';
       return null;
@@ -48,7 +49,7 @@ export function useMistralApi() {
 
   return {
     validateApiKey,
-    callMistralApi,
+    callLlmApi,
     error,
     isLoading,
   };

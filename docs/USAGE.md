@@ -7,9 +7,14 @@
 npm install
 ```
 
-2. Configure your Mistral API key:
+2. Configure your LLM API key:
 - Copy `.env.example` to `.env.local`
-- Add your Mistral API key: `VITE_MISTRAL_API_KEY=your_api_key_here`
+- Add your LLM API key and configuration:
+  ```
+  VITE_LLM_API_KEY=your_api_key_here
+  VITE_LLM_BASE_URL=https://opencode.ai/zen/go/v1/chat/completions
+  VITE_LLM_DEFAULT_MODEL=qwen3.5-plus
+  ```
 
 ## Running the Application
 
@@ -40,4 +45,4 @@ npm run dev
 
 - **API Key Issues**: Ensure your key is valid and has the correct format
 - **Network Errors**: Check your internet connection and API status
-- **Rate Limits**: Mistral API has rate limits - wait and try again
+- **Rate Limits**: LLM API has rate limits - wait and try again

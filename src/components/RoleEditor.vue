@@ -44,17 +44,17 @@
 
     <div v-if="showApiWarning" class="mt-4 p-3 bg-yellow-100 text-yellow-800 rounded text-sm">
       <p class="font-medium">需要 API 金鑰</p>
-      <p>請在 `.env.local` 檔案設定 Mistral API 金鑰</p>
+      <p>請在 `.env.local` 檔案設定 LLM API 金鑰</p>
     </div>
   </div>
 </template>
 
 <script setup>
 import { useRoles } from '@/composables/useRoles';
-import { useMistralApi } from '@/services/mistralApi';
+import { useLlmApi } from '@/services/llmApi';
 import { ref } from 'vue';
 
-const { validateApiKey } = useMistralApi();
+const { validateApiKey } = useLlmApi();
 const {
   heroPrompt,
   villainPrompt,
