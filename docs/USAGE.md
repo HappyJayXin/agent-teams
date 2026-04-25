@@ -9,12 +9,8 @@ npm install
 
 2. 設定 LLM API 金鑰：
 - 複製 `.env.example` 為 `.env.local`
-- 填入以下設定：
-  ```
-  VITE_LLM_API_KEY=your_api_key_here
-  VITE_LLM_BASE_URL=https://opencode.ai/zen/go/v1/chat/completions
-  VITE_LLM_DEFAULT_MODEL=qwen3.5-plus
-  ```
+
+> 注意：開發模式（`npm run dev`）下，API 請求會透過 Vite proxy 轉發至 OpenAI，`VITE_LLM_BASE_URL` 僅在 production build 生效。proxy 設定位於 `vite.config.js`。
 
 ## 啟動應用程式
 
@@ -27,7 +23,7 @@ npm run dev
 ### 角色設定
 
 - 編輯角色 A 與角色 B 的提示詞，自訂各自的立場、語氣與人設
-- 設定討論回合數（預設 10 輪）
+- 設定討論回合數
 
 ### 開始討論
 

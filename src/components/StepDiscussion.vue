@@ -89,7 +89,7 @@ const props = defineProps({
   apiError: { type: String, default: '' },
   maxResponseLength: { type: Number, default: 100 },
   currentRound: { type: Number, default: 0 },
-  maxRounds: { type: Number, default: 10 }
+  maxRounds: { type: Number, default: 3 }
 });
 
 const emit = defineEmits(['update:topic', 'start']);

@@ -1,7 +1,6 @@
 import { ref } from 'vue';
 import { useApiService } from '@/services/apiService';
 import { useRoles } from '@/composables/useRoles';
-import { saveToHistory } from '@/utils/storage';
 
 export function useDiscussion() {
   const { getAiResponse, validateApiKey, error: apiError, isLoading } = useApiService();
@@ -108,7 +107,14 @@ export function useDiscussion() {
       points: points.value
     };
 
-    return saveToHistory(conversationData);
+    const filename = `discussion-${conversationData.id}.json`;
+    const blob = new Blob([JSON.stringify(conversationData, null, 2)], { type: 'application/json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = filename;
+    a.click();
+    URL.revokeObjectURL(url);
   };
 
   return {

@@ -14,7 +14,7 @@
 ## 功能特色
 
 - 自訂 AI 角色提示詞（人設、語氣、立場）
-- 設定討論回合數（預設 10 輪）
+- 設定討論回合數
 - 自動生成討論摘要與關鍵觀點
 - 本地端對話紀錄儲存
 - 支援多種 LLM 服務（透過相容 OpenAI 格式的 API）
@@ -26,16 +26,6 @@
 
 ```sh
 npm install
-```
-
-### 設定環境變數
-
-複製 `.env.example` 為 `.env.local`，填入 LLM API 設定：
-
-```env
-VITE_LLM_API_KEY=your_api_key_here
-VITE_LLM_BASE_URL=https://opencode.ai/zen/go/v1/chat/completions
-VITE_LLM_DEFAULT_MODEL=qwen3.5-plus
 ```
 
 ### 啟動開發伺服器

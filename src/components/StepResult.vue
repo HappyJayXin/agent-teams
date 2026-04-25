@@ -16,12 +16,17 @@
       </div>
     </div>
 
+    <div v-if="saved" class="mb-3 px-4 py-2.5 bg-emerald-50 border border-emerald-200 rounded-lg text-sm text-emerald-700">
+      已儲存至本地端記錄。
+    </div>
+
     <div class="flex justify-between items-center gap-3">
       <button
-        @click="$emit('save')"
-        class="px-5 py-2.5 text-sm border border-gray-200 rounded-lg text-gray-500 hover:bg-gray-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2"
+        @click="handleSave"
+        :disabled="saved"
+        class="px-5 py-2.5 text-sm border border-gray-200 rounded-lg text-gray-500 hover:bg-gray-50 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#2563EB] focus-visible:ring-offset-2 disabled:opacity-50 disabled:cursor-not-allowed"
       >
-        儲存討論記錄
+        {{ saved ? '已儲存' : '儲存討論記錄' }}
       </button>
       <button
         @click="$emit('restart')"
@@ -34,9 +39,19 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
 defineProps({
   summary: { type: String, default: '' }
 });
 
-defineEmits(['save', 'restart']);
+const emit = defineEmits(['save', 'restart']);
+
+const saved = ref(false);
+
+const handleSave = () => {
+  emit('save');
+  saved.value = true;
+};
+
 </script>

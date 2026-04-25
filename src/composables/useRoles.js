@@ -5,12 +5,12 @@ const villainDefaultPrompt = '你是一位挑剔、反對且善於找問題的 A
 
 const heroPrompt = ref(heroDefaultPrompt);
 const villainPrompt = ref(villainDefaultPrompt);
-const defaultRounds = ref(10);
+const defaultRounds = ref(3);
 
 const resetToDefaults = () => {
   heroPrompt.value = heroDefaultPrompt;
   villainPrompt.value = villainDefaultPrompt;
-  defaultRounds.value = 10;
+  defaultRounds.value = 3;
 };
 
 export function useRoles() {
