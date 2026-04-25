@@ -4,7 +4,7 @@
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">英雄角色提示詞</label>
+        <label class="block text-sm font-medium text-gray-700 mb-1">角色 A 提示詞</label>
         <textarea
           v-model="heroPrompt"
           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"
@@ -13,7 +13,7 @@
       </div>
 
       <div>
-        <label class="block text-sm font-medium text-gray-700 mb-1">反派角色提示詞</label>
+        <label class="block text-sm font-medium text-gray-700 mb-1">角色 B 提示詞</label>
         <textarea
           v-model="villainPrompt"
           class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-all duration-200"

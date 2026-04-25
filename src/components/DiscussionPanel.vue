@@ -63,7 +63,7 @@
               class="inline-flex h-6 items-center rounded-full px-2"
               :class="item.role === 'hero' ? 'bg-blue-100 text-blue-700' : 'bg-rose-100 text-rose-700'"
             >
-              {{ item.role === 'hero' ? '英雄' : '反派' }}
+              {{ item.role === 'hero' ? '角色 A' : '角色 B' }}
             </span>
             <span class="text-gray-500">第 {{ index + 1 }} 則</span>
             <span class="text-gray-400">{{ formatTime(item.timestamp) }}</span>
