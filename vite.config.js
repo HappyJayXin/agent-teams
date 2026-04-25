@@ -15,4 +15,13 @@ export default defineConfig({
       '@': fileURLToPath(new URL('./src', import.meta.url))
     },
   },
+  server: {
+    proxy: {
+      '/api/llm': {
+        target: 'https://opencode.ai',
+        changeOrigin: true,
+        rewrite: (path) => path.replace(/^\/api\/llm/, '/zen/go/v1/chat/completions'),
+      },
+    },
+  },
 })

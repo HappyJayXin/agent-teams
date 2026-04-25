@@ -29,6 +29,7 @@ export function useDiscussion() {
 
     conversation.value = [];
     currentRound.value = 0;
+    maxRounds.value = defaultRounds.value;
     discussionComplete.value = false;
     summary.value = '';
     points.value = [];

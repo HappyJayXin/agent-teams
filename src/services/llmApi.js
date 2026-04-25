@@ -2,7 +2,9 @@ import { ref } from 'vue';
 
 export function useLlmApi() {
   const apiKey = import.meta.env.VITE_LLM_API_KEY;
-  const baseUrl = import.meta.env.VITE_LLM_BASE_URL;
+  const baseUrl = import.meta.env.DEV
+    ? '/api/llm'
+    : import.meta.env.VITE_LLM_BASE_URL;
   const defaultModel = import.meta.env.VITE_LLM_DEFAULT_MODEL || 'qwen3.5-plus';
   const error = ref(null);
   const isLoading = ref(false);
