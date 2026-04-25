@@ -6,7 +6,7 @@
         <input
           v-model="localTopic"
           type="text"
-          placeholder="請輸入討論主題"
+          placeholder="輸入討論主題"
           class="flex-1 px-3 py-2.5 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-all"
         />
         <button
@@ -51,24 +51,24 @@
           v-for="(item, index) in conversation"
           :key="index"
           class="mb-3 flex"
-          :class="item.role === 'hero' ? 'justify-start' : 'justify-end'"
+          :class="item.role === 'proponent' ? 'justify-start' : 'justify-end'"
         >
-          <div v-if="item.role === 'hero'" class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-600 mr-2 mt-1 shrink-0">A</div>
+          <div v-if="item.role === 'proponent'" class="w-7 h-7 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-600 mr-2 mt-1 shrink-0">正</div>
           <article
             class="max-w-[80%] rounded-2xl border px-4 py-3 shadow-sm text-sm"
-            :class="item.role === 'hero'
+            :class="item.role === 'proponent'
               ? 'bg-blue-50 border-blue-100 text-blue-950 rounded-tl-sm'
               : 'bg-rose-50 border-rose-100 text-rose-950 rounded-tr-sm'"
           >
             <div class="flex flex-wrap items-center gap-2 mb-1.5 text-xs font-semibold">
-              <span :class="item.role === 'hero' ? 'text-blue-600' : 'text-rose-500'">
-                {{ item.role === 'hero' ? '角色 A' : '角色 B' }}
+              <span :class="item.role === 'proponent' ? 'text-blue-600' : 'text-rose-500'">
+                {{ item.role === 'proponent' ? '正方' : '反方' }}
               </span>
               <span class="text-gray-400 font-normal">第 {{ index + 1 }} 則 · {{ formatTime(item.timestamp) }}</span>
             </div>
             <p class="whitespace-pre-wrap break-words leading-relaxed">{{ item.content }}</p>
           </article>
-          <div v-if="item.role !== 'hero'" class="w-7 h-7 rounded-full bg-pink-100 flex items-center justify-center text-xs font-bold text-pink-500 ml-2 mt-1 shrink-0">B</div>
+          <div v-if="item.role !== 'proponent'" class="w-7 h-7 rounded-full bg-pink-100 flex items-center justify-center text-xs font-bold text-pink-500 ml-2 mt-1 shrink-0">反</div>
         </div>
 
         <div v-if="isLoading && conversation.length > 0" class="text-center text-xs text-gray-400 py-2">

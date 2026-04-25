@@ -4,7 +4,7 @@ import { useRoles } from '@/composables/useRoles';
 
 export function useDiscussion() {
   const { getAiResponse, validateApiKey, error: apiError, isLoading } = useApiService();
-  const { heroPrompt, villainPrompt, defaultRounds } = useRoles();
+  const { proponentPrompt, opponentPrompt, defaultRounds } = useRoles();
 
   const topic = ref('');
   const conversation = ref([]);
@@ -17,12 +17,12 @@ export function useDiscussion() {
 
   const startDiscussion = async () => {
     if (!validateApiKey()) {
-      apiError.value = '請先設定有效的 Mistral API 金鑰';
+      apiError.value = '先設定有效的 Mistral API 金鑰';
       return;
     }
 
     if (!topic.value.trim()) {
-      apiError.value = '請輸入討論主題';
+      apiError.value = '輸入討論主題';
       return;
     }
 
@@ -33,8 +33,7 @@ export function useDiscussion() {
     summary.value = '';
     points.value = [];
 
-    // Start with hero
-    await getNextResponse('hero', topic.value);
+    await getNextResponse('proponent', topic.value);
   };
 
   const getNextResponse = async (role, message) => {
@@ -43,8 +42,8 @@ export function useDiscussion() {
       return;
     }
 
-    const rolePrompt = role === 'hero' ? heroPrompt.value : villainPrompt.value;
-    const lengthRulePrompt = `請用繁體中文回覆，且每次回覆嚴格控制在 ${maxResponseLength} 字以內。不要超過上限，不要附加多餘說明。`;
+    const rolePrompt = role === 'proponent' ? proponentPrompt.value : opponentPrompt.value;
+    const lengthRulePrompt = `用繁體中文回覆，且每次回覆嚴格控制在 ${maxResponseLength} 字以內。不要超過上限，不要附加多餘說明。`;
     const response = await getAiResponse(`${rolePrompt}\n${lengthRulePrompt}`, message);
 
     if (response) {
@@ -57,7 +56,7 @@ export function useDiscussion() {
       currentRound.value++;
 
       // Alternate roles
-      const nextRole = role === 'hero' ? 'villain' : 'hero';
+      const nextRole = role === 'proponent' ? 'opponent' : 'proponent';
       const lastMessage = conversation.value[conversation.value.length - 1].content;
 
       if (currentRound.value < maxRounds.value) {
@@ -72,7 +71,7 @@ export function useDiscussion() {
     const conversationText = conversation.value.map(item => `${item.role}: ${item.content}`).join('\n');
 
     const summaryPrompt = `
-      你是一位中立的第三方觀察者，請根據以下討論內容，以客觀、中立的角度提供精簡摘要與重點。
+      你是一位中立的第三方觀察者，根據以下討論內容，以客觀、中立的角度提供精簡摘要與重點。
 
       討論內容：
       ${conversationText}
@@ -98,8 +97,8 @@ export function useDiscussion() {
       topic: topic.value,
       timestamp: new Date().toISOString(),
       roles: {
-        hero: heroPrompt.value,
-        villain: villainPrompt.value
+        proponent: proponentPrompt.value,
+        opponent: opponentPrompt.value
       },
       rounds: maxRounds.value,
       conversation: conversation.value,

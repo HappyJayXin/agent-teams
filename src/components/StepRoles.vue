@@ -4,10 +4,10 @@
       <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
         <div class="flex items-center gap-2 mb-3">
           <div class="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-xs font-bold text-blue-600">A</div>
-          <span class="text-sm font-semibold text-gray-800">角色 A 提示詞</span>
+          <span class="text-sm font-semibold text-gray-800">正方提示詞</span>
         </div>
         <textarea
-          v-model="heroPrompt"
+          v-model="proponentPrompt"
           rows="4"
           class="w-full p-3 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-all resize-none"
         ></textarea>
@@ -16,10 +16,10 @@
       <div class="bg-white border border-gray-200 rounded-xl p-4 shadow-sm">
         <div class="flex items-center gap-2 mb-3">
           <div class="w-8 h-8 rounded-full bg-pink-100 flex items-center justify-center text-xs font-bold text-pink-500">B</div>
-          <span class="text-sm font-semibold text-gray-800">角色 B 提示詞</span>
+          <span class="text-sm font-semibold text-gray-800">反方提示詞</span>
         </div>
         <textarea
-          v-model="villainPrompt"
+          v-model="opponentPrompt"
           rows="4"
           class="w-full p-3 text-sm border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2563EB] focus:border-transparent transition-all resize-none"
         ></textarea>
@@ -65,7 +65,7 @@ import { useRoles } from '@/composables/useRoles';
 
 defineEmits(['next']);
 
-const { heroPrompt, villainPrompt, defaultRounds, resetToDefaults } = useRoles();
+const { proponentPrompt, opponentPrompt, defaultRounds, resetToDefaults } = useRoles();
 const rounds = defaultRounds;
 
 const decRounds = () => {

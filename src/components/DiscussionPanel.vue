@@ -5,7 +5,7 @@
       <input
         v-model="topic"
         type="text"
-        placeholder="請輸入討論主題"
+        placeholder="輸入討論主題"
         class="w-full p-2 border border-gray-300 rounded-md"
       />
       <p class="mt-1 text-xs text-gray-500">規則：每輪 AI 回覆會要求控制在 {{ maxResponseLength }} 字以內</p>
@@ -50,20 +50,20 @@
         v-for="(item, index) in conversation"
         :key="index"
         class="mb-3 flex"
-        :class="item.role === 'hero' ? 'justify-start' : 'justify-end'"
+        :class="item.role === 'proponent' ? 'justify-start' : 'justify-end'"
       >
         <article
           class="max-w-[85%] rounded-2xl border px-4 py-3 shadow-sm"
-          :class="item.role === 'hero'
+          :class="item.role === 'proponent'
             ? 'border-blue-100 bg-blue-50 text-blue-950'
             : 'border-rose-100 bg-rose-50 text-rose-950'"
         >
           <div class="mb-2 flex items-center gap-2 text-xs font-semibold uppercase tracking-wide">
             <span
               class="inline-flex h-6 items-center rounded-full px-2"
-              :class="item.role === 'hero' ? 'bg-blue-100 text-blue-700' : 'bg-rose-100 text-rose-700'"
+              :class="item.role === 'proponent' ? 'bg-blue-100 text-blue-700' : 'bg-rose-100 text-rose-700'"
             >
-              {{ item.role === 'hero' ? '角色 A' : '角色 B' }}
+              {{ item.role === 'proponent' ? '正方' : '反方' }}
             </span>
             <span class="text-gray-500">第 {{ index + 1 }} 則</span>
             <span class="text-gray-400">{{ formatTime(item.timestamp) }}</span>

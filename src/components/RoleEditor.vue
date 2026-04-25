@@ -44,7 +44,7 @@
 
     <div v-if="showApiWarning" class="mt-4 p-3 bg-yellow-100 text-yellow-800 rounded text-sm">
       <p class="font-medium">需要 API 金鑰</p>
-      <p>請在 `.env.local` 檔案設定 LLM API 金鑰</p>
+      <p>在 `.env.local` 檔案設定 LLM API 金鑰</p>
     </div>
   </div>
 </template>

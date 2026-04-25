@@ -10,7 +10,7 @@
       <div v-if="!apiKeyValid" class="max-w-4xl mx-auto px-4 pt-4">
         <div class="p-3 bg-yellow-50 border border-yellow-200 text-yellow-800 rounded-xl text-sm">
           <p class="font-semibold">需要 API 金鑰</p>
-          <p>請在 <code class="bg-yellow-100 px-1 rounded">.env.local</code> 設定 <code class="bg-yellow-100 px-1 rounded">VITE_LLM_API_KEY</code></p>
+          <p>在 <code class="bg-yellow-100 px-1 rounded">.env.local</code> 設定 <code class="bg-yellow-100 px-1 rounded">VITE_LLM_API_KEY</code></p>
         </div>
       </div>
 
